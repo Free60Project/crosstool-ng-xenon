@@ -1,0 +1,14 @@
+libstdc++: newlib/bare-metal configure workarounds
+
+--- a/libstdc++-v3/configure
++++ b/libstdc++-v3/configure
+@@ -11962,6 +11962,9 @@
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no
++  lt_cv_shlibpath_overrides_runpath=no
++  glibcxx_cv_getentropy=no
++  glibcxx_cv_arc4random=no
+
+   # Some binutils ld are patched to set DT_RUNPATH
+   if ${lt_cv_shlibpath_overrides_runpath+:} false; then :

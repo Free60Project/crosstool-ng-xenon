@@ -1,0 +1,21 @@
+# crosstool-ng defconfig for the Xbox 360 (Xenon) bare-metal toolchain.
+# build.sh substitutes @PATCH_DIR@ and @PREFIX@ before use; do not edit them here.
+CT_CONFIGURE_has_make380=y
+CT_CONFIGURE_has_make381=y
+CT_ARCH_POWERPC=y
+CT_ARCH_32=y
+CT_ARCH_BE=y
+CT_TARGET_VENDOR="xenon"
+CT_TARGET_ALIAS="xenon"
+CT_KERNEL_BARE_METAL=y
+CT_LIBC_NEWLIB=y
+CT_CC_LANG_CXX=y
+CT_CC_GCC_CORE_EXTRA_CONFIG_ARRAY="--with-cpu=cell --enable-altivec --without-headers"
+CT_CC_GCC_EXTRA_CONFIG_ARRAY="--with-cpu=cell --enable-altivec"
+CT_LIBC_NEWLIB_IO_LL=y
+CT_LIBC_NEWLIB_IO_LDBL=y
+CT_PREFIX_DIR=/usr/local/xenon
+CT_WANTS_STATIC_LINK=y
+CT_PATCH_BUNDLED_LOCAL=y
+CT_LOCAL_PATCH_DIR=patches
+CT_DEBUG_gdb=n
