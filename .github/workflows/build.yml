@@ -1,0 +1,37 @@
+name: build
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gperf bison flex texinfo help2man \
+            libncurses5-dev python3-dev autoconf automake libtool libtool-bin gawk \
+            wget bzip2 xz-utils unzip patch rsync git meson ninja-build
+
+      - name: Build crosstool-NG
+        run: |
+          git clone --depth 1 -b crosstool-ng-1.29.0 https://github.com/crosstool-ng/crosstool-ng "$RUNNER_TEMP/ct-ng-src"
+          cd "$RUNNER_TEMP/ct-ng-src"
+          ./bootstrap
+          ./configure --prefix="$RUNNER_TEMP/ct-ng"
+          make -j4
+          make install
+
+      - name: Generate current.defconfig
+        run: |
+          PREFIX=$(mktemp -d -p "${{ github.workspace }}")
+          sed "s|/usr/local/xenon|$PREFIX|" xenon.defconfig > current.defconfig
+          grep CT_PREFIX_DIR current.defconfig
+
+      - name: Build toolchain
+        run: |
+          export PATH="$RUNNER_TEMP/ct-ng/bin:$PATH"
+          # run from repo root so CT_LOCAL_PATCH_DIR=patches resolves
+          DEFCONFIG=current.defconfig ct-ng defconfig
+          ct-ng build.4
