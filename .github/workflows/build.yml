@@ -34,4 +34,5 @@ jobs:
           export PATH="$RUNNER_TEMP/ct-ng/bin:$PATH"
           # run from repo root so CT_LOCAL_PATCH_DIR=patches resolves
           DEFCONFIG=current.defconfig ct-ng defconfig
+          sed -i -e '/CT_LOG_PROGRESS_BAR/s/y$/n/' .config  # disable progress bar
           ct-ng build.4
